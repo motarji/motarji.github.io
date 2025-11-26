@@ -21,34 +21,65 @@
         .container {
             padding: 20px;
         }
-        .car-card {
-            background: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            box-shadow: 0 0 6px #ddd;
+        .actions {
+            margin-top: 20px;
+            text-align: center;
         }
-        .car-card img {
-            width: 100%;
-            border-radius: 8px;
-        }
-        .btn {
-            display: inline-block;
+        button {
             background: #1a73e8;
             color: white;
-            padding: 10px 15px;
+            border: none;
+            padding: 10px 20px;
             border-radius: 6px;
-            text-decoration: none;
-            margin-top: 10px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        #actionResult {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 10px;
+            margin-top: 30px;
+            background: #eee;
+            color: #555;
         }
     </style>
 </head>
-
 <body>
 
-    <header>
-        تطبيق موتارجي
-    </header>
+<header>
+    تطبيق موتارجي
+</header>
 
-    <div class="container">
-        <h2>آخر السيارات المعروضة</h
+<div class="container">
+    <h2>آخر السيارات المعروضة</h2>
+    <p>مرحباً بك في منصة موتارجي. يمكنك الآن شراء وبيع السيارات بسهولة.</p>
+
+    <div class="actions">
+        <button id="buyBtn">شراء</button>
+        <button id="sellBtn">بيع</button>
+        <p id="actionResult"></p>
+    </div>
+</div>
+
+<footer>
+    &copy; 2025 موتارجي
+</footer>
+
+<script>
+    // كود المرحلة العاشرة
+    document.getElementById("buyBtn").addEventListener("click", () => {
+        document.getElementById("actionResult").innerText = "📌 تم تنفيذ عملية الشراء";
+    });
+
+    document.getElementById("sellBtn").addEventListener("click", () => {
+        document.getElementById("actionResult").innerText = "📌 تم تنفيذ عملية البيع";
+    });
+</script>
+
+</body>
+</html>

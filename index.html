@@ -1,84 +1,152 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>موتارجي - بيع وشراء السيارات</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background: #1a73e8;
-            padding: 15px;
-            color: #fff;
-            text-align: center;
-            font-size: 24px;
-        }
-        .container {
-            padding: 20px;
-        }
-        .actions {
-            margin-top: 20px;
-            text-align: center;
-        }
-        button {
-            background: #1a73e8;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            margin: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        #actionResult {
-            margin-top: 15px;
-            font-size: 18px;
-            color: #333;
-        }
-        footer {
-            text-align: center;
-            padding: 10px;
-            margin-top: 30px;
-            background: #eee;
-            color: #555;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>موتارجي</title>
+<style>
+  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; color:#333; direction:rtl; }
+  header { background:#2c3e50; color:#fff; padding:20px; text-align:center; }
+  h1 { margin:0; }
+  .welcome { text-align:center; margin:20px 0; }
+  .buttons { text-align:center; margin-bottom:20px; }
+  .buttons button { background:#e67e22; border:none; color:#fff; padding:10px 20px; margin:0 10px; cursor:pointer; font-size:16px; border-radius:5px; }
+  .buttons button:hover { background:#d35400; }
+  .filters { text-align:center; margin-bottom:20px; }
+  .filters input { padding:5px 10px; margin:0 5px; border-radius:5px; border:1px solid #ccc; width:120px; }
+  .car-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:0 20px 40px; }
+  .car-card { background:#fff; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); padding:10px; text-align:center; }
+  .car-card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
+  footer { text-align:center; padding:10px; background:#2c3e50; color:#fff; }
+  #sellForm { display:none; background:#fff; padding:20px; margin:20px auto; max-width:400px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
+  #sellForm input, #sellForm select { width:100%; padding:10px; margin:10px 0; border-radius:5px; border:1px solid #ccc; }
+  #sellForm button { width:100%; background:#27ae60; color:#fff; padding:10px; border:none; border-radius:5px; cursor:pointer; }
+  #sellForm button:hover { background:#1e8449; }
+</style>
 </head>
 <body>
 
 <header>
-    تطبيق موتارجي
+  <h1>آخر السيارات المعروضة</h1>
 </header>
 
-<div class="container">
-    <h2>آخر السيارات المعروضة</h2>
-    <p>مرحباً بك في منصة موتارجي. يمكنك الآن شراء وبيع السيارات بسهولة.</p>
+<div class="welcome">
+  <p>مرحباً بك في منصة موتارجي. يمكنك الآن شراء وبيع السيارات بسهولة.</p>
+</div>
 
-    <div class="actions">
-        <button id="buyBtn">شراء</button>
-        <button id="sellBtn">بيع</button>
-        <p id="actionResult"></p>
-    </div>
+<div class="buttons">
+  <button onclick="showSellForm()">بيع</button>
+  <button onclick="showFilters()">شراء</button>
+</div>
+
+<!-- نموذج بيع السيارة -->
+<div id="sellForm">
+  <h3>إضافة سيارة جديدة</h3>
+  <input type="text" id="carName" placeholder="اسم السيارة">
+  <input type="number" id="carPrice" placeholder="السعر (دج)">
+  <input type="text" id="carImage" placeholder="رابط صورة السيارة">
+  <input type="text" id="carType" placeholder="نوع السيارة">
+  <button onclick="addCar()">إضافة السيارة</button>
+</div>
+
+<!-- فلترة السيارات -->
+<div class="filters" id="filters" style="display:none;">
+  <input type="text" id="filterType" placeholder="نوع السيارة">
+  <input type="number" id="filterMin" placeholder="السعر الأدنى">
+  <input type="number" id="filterMax" placeholder="السعر الأعلى">
+  <button onclick="applyFilter()">تصفية</button>
+</div>
+
+<div class="car-list" id="carList">
+  <div class="car-card" data-type="تويوتا" data-price="400000">
+    <img src="https://via.placeholder.com/250x150.png?text=سيارة+1" alt="تويوتا كورولا 2020">
+    <h3>تويوتا كورولا 2020</h3>
+    <p>السعر: 400,000 دج</p>
+    <button onclick="buyCar(this)">شراء</button>
+  </div>
+  <div class="car-card" data-type="هوندا" data-price="380000">
+    <img src="https://via.placeholder.com/250x150.png?text=سيارة+2" alt="هوندا سيفيك 2019">
+    <h3>هوندا سيفيك 2019</h3>
+    <p>السعر: 380,000 دج</p>
+    <button onclick="buyCar(this)">شراء</button>
+  </div>
+  <div class="car-card" data-type="مرسيدس" data-price="950000">
+    <img src="https://via.placeholder.com/250x150.png?text=سيارة+3" alt="مرسيدس C-Class 2018">
+    <h3>مرسيدس C-Class 2018</h3>
+    <p>السعر: 950,000 دج</p>
+    <button onclick="buyCar(this)">شراء</button>
+  </div>
 </div>
 
 <footer>
-    &copy; 2025 موتارجي
+  © 2025 موتارجي
 </footer>
 
 <script>
-    // كود المرحلة العاشرة
-    document.getElementById("buyBtn").addEventListener("click", () => {
-        document.getElementById("actionResult").innerText = "📌 تم تنفيذ عملية الشراء";
-    });
+  function showSellForm() {
+    const form = document.getElementById('sellForm');
+    form.style.display = form.style.display === 'none' ? 'block' : 'none';
+  }
 
-    document.getElementById("sellBtn").addEventListener("click", () => {
-        document.getElementById("actionResult").innerText = "📌 تم تنفيذ عملية البيع";
+  function showFilters() {
+    const filters = document.getElementById('filters');
+    filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function addCar() {
+    const name = document.getElementById('carName').value;
+    const price = document.getElementById('carPrice').value;
+    const image = document.getElementById('carImage').value;
+    const type = document.getElementById('carType').value;
+    if(!name || !price || !image || !type) {
+      alert('الرجاء ملء جميع الحقول');
+      return;
+    }
+
+    const carList = document.getElementById('carList');
+    const card = document.createElement('div');
+    card.className = 'car-card';
+    card.setAttribute('data-type', type);
+    card.setAttribute('data-price', price);
+    card.innerHTML = `
+      <img src="${image}" alt="${name}">
+      <h3>${name}</h3>
+      <p>السعر: ${Number(price).toLocaleString()} دج</p>
+      <button onclick="buyCar(this)">شراء</button>
+    `;
+    carList.appendChild(card);
+
+    document.getElementById('carName').value = '';
+    document.getElementById('carPrice').value = '';
+    document.getElementById('carImage').value = '';
+    document.getElementById('carType').value = '';
+    alert('تمت إضافة السيارة بنجاح!');
+  }
+
+  function buyCar(button) {
+    const card = button.parentElement;
+    const carName = card.querySelector('h3').innerText;
+    const carPrice = card.querySelector('p').innerText;
+    alert(`لقد اخترت شراء السيارة:\n${carName}\n${carPrice}`);
+  }
+
+  function applyFilter() {
+    const type = document.getElementById('filterType').value.toLowerCase();
+    const min = document.getElementById('filterMin').value;
+    const max = document.getElementById('filterMax').value;
+
+    const cars = document.querySelectorAll('.car-card');
+    cars.forEach(car => {
+      const carType = car.getAttribute('data-type').toLowerCase();
+      const carPrice = parseInt(car.getAttribute('data-price'));
+
+      const matchType = type === '' || carType.includes(type);
+      const matchMin = min === '' || carPrice >= parseInt(min);
+      const matchMax = max === '' || carPrice <= parseInt(max);
+
+      car.style.display = (matchType && matchMin && matchMax) ? 'block' : 'none';
     });
+  }
 </script>
 
 </body>

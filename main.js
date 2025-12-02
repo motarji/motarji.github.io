@@ -50,7 +50,7 @@ function displayCars(list) {
     });
 }
 
-// تصفية السيارات
+// التصفية والبحث
 searchInput.addEventListener("input", () => {
     const query = searchInput.value.toLowerCase();
     const filtered = cars.filter(car => car.name.toLowerCase().includes(query));

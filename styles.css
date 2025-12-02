@@ -1,137 +1,87 @@
-/* عام */
+/* خلفية عامة */
 body {
+    font-family: "Inter", Arial, sans-serif;
+    background: #f5f6f7;
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
-    color: #333;
-    text-align: center;
+    padding: 0;
+    color: #222;
 }
 
-/* رأس الصفحة */
-header {
-    background-color: #1e90ff;
+/* حاوية عامة مثل App Studio */
+.container {
+    width: 95%;
+    max-width: 800px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+}
+
+/* العناوين */
+h1, h2, h3 {
+    font-weight: 600;
+    color: #111;
+    margin-bottom: 15px;
+}
+
+/* أزرار */
+button, .btn {
+    background: #4a6cf7;
     color: white;
-    padding: 20px;
-    position: relative;
-}
-
-#userPanel {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-#userPanel button, #userPanel select {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-}
-
-#userPanel select {
-    padding: 5px;
-}
-
-/* نافذة مودال */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6);
-}
-
-.modal-content {
-    background-color: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    width: 300px;
+    padding: 12px 18px;
     border-radius: 10px;
-    position: relative;
-}
-
-.modal-content .close {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    font-size: 25px;
-    cursor: pointer;
-}
-
-/* الأزرار */
-button {
-    background-color: #1e90ff;
-    color: white;
     border: none;
-    border-radius: 5px;
-    padding: 10px;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
-button:hover {
-    background-color: #0b66c3;
+button:hover, .btn:hover {
+    background: #3b56c8;
 }
 
-/* التنقل */
-nav {
-    margin: 20px 0;
-}
-
-nav input, nav select {
-    padding: 5px;
-    margin-left: 5px;
-}
-
-/* قسم السيارات */
-#carsSection {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-}
-
-.car-card {
-    background-color: white;
-    width: 250px;
+/* بطاقات السيارات */
+.card {
+    background: #fff;
+    border-radius: 14px;
     padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
-.car-card img {
+.card img {
     width: 100%;
-    height: 150px;
-    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+/* حقول الإدخال */
+input, select {
+    width: 100%;
+    padding: 14px;
+    margin: 10px 0;
     border-radius: 10px;
+    border: 1px solid #ccc;
+    background: #fafafa;
+    font-size: 15px;
 }
 
-/* قسم البيع */
-#sellFormSection {
+/* القائمة العلوية مثل App Studio */
+.header {
+    background: white;
+    padding: 16px;
+    box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* footer */
+.footer {
+    text-align: center;
     padding: 20px;
-}
-
-#sellFormSection input {
-    width: 80%;
-    padding: 8px;
-    margin: 5px 0;
-}
-
-/* اخفاء العناصر */
-.hidden {
-    display: none;
-}
-
-/* فوتر */
-footer {
-    background-color: #1e90ff;
-    color: white;
-    padding: 15px 0;
-    margin-top: 20px;
+    color: #777;
+    font-size: 14px;
 }

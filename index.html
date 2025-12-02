@@ -1,151 +1,420 @@
-<!DOCTYPE html>
-<html lang="ar">
+<!doctype html>
+<html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>موتارجي</title>
-<style>
-  body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f7f7f7; color:#333; direction:rtl; }
-  header { background:#2c3e50; color:#fff; padding:20px; text-align:center; }
-  h1 { margin:0; }
-  .welcome { text-align:center; margin:20px 0; }
-  .buttons { text-align:center; margin-bottom:20px; }
-  .buttons button { background:#e67e22; border:none; color:#fff; padding:10px 20px; margin:0 10px; cursor:pointer; font-size:16px; border-radius:5px; }
-  .buttons button:hover { background:#d35400; }
-  .filters { text-align:center; margin-bottom:20px; }
-  .filters input { padding:5px 10px; margin:0 5px; border-radius:5px; border:1px solid #ccc; width:120px; }
-  .car-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; padding:0 20px 40px; }
-  .car-card { background:#fff; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); padding:10px; text-align:center; }
-  .car-card img { width:100%; height:150px; object-fit:cover; border-radius:10px; }
-  footer { text-align:center; padding:10px; background:#2c3e50; color:#fff; }
-  #sellForm { display:none; background:#fff; padding:20px; margin:20px auto; max-width:400px; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.2); }
-  #sellForm input, #sellForm select { width:100%; padding:10px; margin:10px 0; border-radius:5px; border:1px solid #ccc; }
-  #sellForm button { width:100%; background:#27ae60; color:#fff; padding:10px; border:none; border-radius:5px; cursor:pointer; }
-  #sellForm button:hover { background:#1e8449; }
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>موتارجي — سوق السيارات</title>
+  <style>
+    :root{--primary:#0b74ff;--accent:#ff7a00;--card:#fff;--bg:#f5f7fb;--muted:#6b7280}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter, "Segoe UI", Tahoma, Arial;background:var(--bg);color:#111}
+    header{background:linear-gradient(90deg,var(--primary),#1764ff);color:#fff;padding:18px 16px;text-align:center}
+    header h1{margin:0;font-size:20px}
+    .container{max-width:920px;margin:18px auto;padding:0 12px}
+    .topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:14px}
+    .search{flex:1;display:flex;gap:8px}
+    input[type=search]{flex:1;padding:10px 12px;border-radius:10px;border:1px solid #e3e7ee;background:#fff}
+    .actions{display:flex;gap:8px}
+    button.primary{background:var(--primary);color:#fff;border:none;padding:10px 14px;border-radius:10px;cursor:pointer}
+    button.ghost{background:#fff;border:1px solid #e3e7ee;padding:10px 14px;border-radius:10px;cursor:pointer}
+
+    /* Grid */
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+    .card{background:var(--card);border-radius:14px;padding:12px;box-shadow:0 6px 18px rgba(12,24,48,0.06);overflow:hidden;display:flex;flex-direction:column}
+    .thumb{height:150px;border-radius:10px;background:#eee;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .thumb img{width:100%;height:100%;object-fit:cover}
+    h3{margin:10px 0 6px;font-size:18px}
+    .meta{color:var(--muted);font-size:14px;margin-bottom:8px}
+    .price{font-weight:700;color:#111;margin-bottom:10px}
+    .card .row{display:flex;gap:8px}
+    .btn{flex:1;padding:8px;border-radius:8px;border:none;cursor:pointer}
+    .btn.buy{background:var(--primary);color:#fff}
+    .btn.sell{background:var(--accent);color:#fff}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* Footer */
+    footer{margin-top:18px;text-align:center;color:var(--muted);padding:18px 0}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,0.45);display:none;align-items:center;justify-content:center;padding:18px}
+    .modal{background:#fff;border-radius:12px;max-width:720px;width:100%;overflow:auto;max-height:90vh;padding:16px}
+    .modal .head{display:flex;align-items:center;justify-content:space-between}
+    .form-row{display:flex;gap:8px;margin-top:10px}
+    .form-row .field{flex:1}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    input[type=text],input[type=number],select,textarea{width:100%;padding:10px;border:1px solid #e6e9ef;border-radius:8px}
+    textarea{min-height:100px}
+    .flex{display:flex;gap:8px}
+
+    /* responsiveness */
+    @media (max-width:420px){.thumb{height:130px}.topbar{flex-direction:column;align-items:stretch}.actions{justify-content:space-between}}
+
+    /* small helpers */
+    .muted{color:var(--muted)}
+    .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#f3f6ff;color:var(--primary);font-weight:600}
+  </style>
 </head>
 <body>
+  <header>
+    <h1>موتارجي — سوق السيارات</h1>
+    <div style="font-size:13px;margin-top:6px;opacity:.95">اشتري وبع سيارات مستعملة بكل سهولة — محفوظ محلياً</div>
+  </header>
 
-<header>
-  <h1>آخر السيارات المعروضة</h1>
-</header>
+  <main class="container">
+    <div class="topbar">
+      <div class="search">
+        <input id="q" type="search" placeholder="ابحث عن ماركة أو سنة أو سعر..." />
+        <select id="filterYear" style="width:110px;border-radius:10px;padding:10px;border:1px solid #e3e7ee;background:#fff">
+          <option value="all">كل السنوات</option>
+        </select>
+      </div>
+      <div class="actions">
+        <button class="ghost" id="reload">إعادة تحميل</button>
+        <button class="primary" id="addCarBtn">أضف سيارة</button>
+      </div>
+    </div>
 
-<div class="welcome">
-  <p>مرحباً بك في منصة موتارجي. يمكنك الآن شراء وبيع السيارات بسهولة.</p>
-</div>
+    <section id="stats" style="display:flex;gap:10px;align-items:center;margin-bottom:10px">
+      <div class="pill" id="count">0 سيارات</div>
+      <div class="small muted">المخزن: LocalStorage</div>
+    </section>
 
-<div class="buttons">
-  <button onclick="showSellForm()">بيع</button>
-  <button onclick="showFilters()">شراء</button>
-</div>
+    <section class="grid" id="carsGrid">
+      <!-- كروت السيارات -->
+    </section>
 
-<div id="sellForm">
-  <h3>إضافة سيارة جديدة</h3>
-  <input type="text" id="carName" placeholder="اسم السيارة">
-  <input type="number" id="carPrice" placeholder="السعر (دج)">
-  <input type="text" id="carImage" placeholder="رابط صورة السيارة">
-  <input type="text" id="carType" placeholder="نوع السيارة">
-  <button onclick="addCar()">إضافة السيارة</button>
-</div>
+    <footer>
+      © موتارجي 2025
+    </footer>
+  </main>
 
-<div class="filters" id="filters" style="display:none;">
-  <input type="text" id="filterType" placeholder="نوع السيارة">
-  <input type="number" id="filterMin" placeholder="السعر الأدنى">
-  <input type="number" id="filterMax" placeholder="السعر الأعلى">
-  <button onclick="applyFilter()">تصفية</button>
-</div>
+  <!-- Modal (Add / Edit / Details) -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="head">
+        <strong id="modalTitle">إضافة سيارة</strong>
+        <div style="display:flex;gap:8px">
+          <button class="ghost" id="closeModal">إغلاق</button>
+        </div>
+      </div>
 
-<div class="car-list" id="carList">
-  <div class="car-card" data-type="تويوتا" data-price="400000">
-    <img src="https://via.placeholder.com/250x150.png?text=سيارة+1" alt="تويوتا كورولا 2020">
-    <h3>تويوتا كورولا 2020</h3>
-    <p>السعر: 400,000 دج</p>
-    <button onclick="buyCar(this)">شراء</button>
+      <div id="modalBody">
+        <!-- form -->
+        <form id="carForm">
+          <input type="hidden" id="carId" />
+          <div class="form-row">
+            <div class="field">
+              <label>العلامة / الموديل</label>
+              <input id="makeModel" type="text" placeholder="مثال: تويوتا كورولا 2020" required />
+            </div>
+            <div class="field">
+              <label>السنة</label>
+              <input id="year" type="number" min="1900" max="2099" step="1" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>السعر (دج)</label>
+              <input id="price" type="number" min="0" required />
+            </div>
+            <div class="field">
+              <label>الحالة</label>
+              <select id="status">
+                <option value="available">متاح</option>
+                <option value="sold">مباع</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <label>وصف (اختياري)</label>
+            <textarea id="desc" placeholder="ملاحظات عن السيارة، حالة، رقم الكيلومترات..."></textarea>
+          </div>
+
+          <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+            <div style="flex:1">
+              <label>صورة السيارة (اختياري)</label>
+              <input id="image" type="file" accept="image/*" />
+            </div>
+            <div style="width:120px;height:80px;border-radius:8px;overflow:hidden;background:#fafafa;border:1px solid #eee;display:flex;align-items:center;justify-content:center" id="imgPreview">صورة</div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <button class="primary" type="submit" id="saveBtn">حفظ</button>
+            <button type="button" class="ghost" id="resetBtn">إعادة تعيين</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-  <div class="car-card" data-type="هوندا" data-price="380000">
-    <img src="https://via.placeholder.com/250x150.png?text=سيارة+2" alt="هوندا سيفيك 2019">
-    <h3>هوندا سيفيك 2019</h3>
-    <p>السعر: 380,000 دج</p>
-    <button onclick="buyCar(this)">شراء</button>
-  </div>
-  <div class="car-card" data-type="مرسيدس" data-price="950000">
-    <img src="https://via.placeholder.com/250x150.png?text=سيارة+3" alt="مرسيدس C-Class 2018">
-    <h3>مرسيدس C-Class 2018</h3>
-    <p>السعر: 950,000 دج</p>
-    <button onclick="buyCar(this)">شراء</button>
-  </div>
-</div>
 
-<footer>
-  © 2025 موتارجي
-</footer>
+  <template id="cardTpl">
+    <div class="card">
+      <div class="thumb"><img src="" alt="سيارة"/></div>
+      <h3></h3>
+      <div class="meta"></div>
+      <div class="price"></div>
+      <div class="row">
+        <button class="btn buy">شراء</button>
+        <button class="btn sell">بيع</button>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button class="btn ghost small view">تفاصيل</button>
+        <button class="btn ghost small edit">تعديل</button>
+        <button class="btn ghost small del">حذف</button>
+      </div>
+    </div>
+  </template>
 
-<script>
-  function showSellForm() {
-    const form = document.getElementById('sellForm');
-    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-  }
+  <script>
+    // بيانات افتراضية لتحميل أولي إذا لم توجد بيانات في localStorage
+    const SAMPLE = [
+      {id:uid(),make:'تويوتا كورولا 2020',year:2020,price:400000,status:'available',desc:'حالة جيدة، 120000 كم',img:''},
+      {id:uid(),make:'هوندا سيفيك 2019',year:2019,price:380000,status:'available',desc:'صيانة كاملة',img:''},
+      {id:uid(),make:'مرسيدس C-Class 2018',year:2018,price:900000,status:'sold',desc:'مباع',img:''}
+    ];
 
-  function showFilters() {
-    const filters = document.getElementById('filters');
-    filters.style.display = filters.style.display === 'none' ? 'block' : 'none';
-  }
+    const STORAGE_KEY = 'motarji_cars_v1';
+    // DOM
+    const grid = document.getElementById('carsGrid');
+    const q = document.getElementById('q');
+    const filterYear = document.getElementById('filterYear');
+    const addCarBtn = document.getElementById('addCarBtn');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const closeModal = document.getElementById('closeModal');
+    const carForm = document.getElementById('carForm');
+    const carId = document.getElementById('carId');
+    const makeModel = document.getElementById('makeModel');
+    const yearI = document.getElementById('year');
+    const price = document.getElementById('price');
+    const desc = document.getElementById('desc');
+    const image = document.getElementById('image');
+    const imgPreview = document.getElementById('imgPreview');
+    const status = document.getElementById('status');
+    const count = document.getElementById('count');
+    const reload = document.getElementById('reload');
 
-  function addCar() {
-    const name = document.getElementById('carName').value;
-    const price = document.getElementById('carPrice').value;
-    const image = document.getElementById('carImage').value;
-    const type = document.getElementById('carType').value;
-    if(!name || !price || !image || !type) {
-      alert('الرجاء ملء جميع الحقول');
-      return;
+    // utils
+    function uid(){return 'id_'+Math.random().toString(36).slice(2,9)}
+
+    function saveCars(arr){localStorage.setItem(STORAGE_KEY,JSON.stringify(arr))}
+    function loadCars(){
+      try{
+        const s=localStorage.getItem(STORAGE_KEY);
+        if(!s) return null;
+        return JSON.parse(s);
+      }catch(e){return null}
     }
 
-    const carList = document.getElementById('carList');
-    const card = document.createElement('div');
-    card.className = 'car-card';
-    card.setAttribute('data-type', type);
-    card.setAttribute('data-price', price);
-    card.innerHTML = `
-      <img src="${image}" alt="${name}">
-      <h3>${name}</h3>
-      <p>السعر: ${Number(price).toLocaleString()} دج</p>
-      <button onclick="buyCar(this)">شراء</button>
-    `;
-    carList.appendChild(card);
+    // init
+    let cars = loadCars();
+    if(!cars){cars=SAMPLE; saveCars(cars)}
 
-    document.getElementById('carName').value = '';
-    document.getElementById('carPrice').value = '';
-    document.getElementById('carImage').value = '';
-    document.getElementById('carType').value = '';
-    alert('تمت إضافة السيارة بنجاح!');
-  }
+    // render
+    function render(list){
+      grid.innerHTML='';
+      if(!list.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--muted)">لا توجد سيارات حالياً</div>';}
+      list.forEach(c=>{
+        const tpl = document.getElementById('cardTpl').content.cloneNode(true);
+        const card = tpl.querySelector('.card');
+        tpl.querySelector('h3').textContent = c.make;
+        tpl.querySelector('.meta').textContent = c.year + ' · ' + (c.status==='sold'? 'مباع':'متاح');
+        tpl.querySelector('.price').textContent = c.price.toLocaleString('ar-EG') + ' دج';
+        const imgEl = tpl.querySelector('img');
+        imgEl.src = c.img || placeholder(c.make);
+        imgEl.alt = c.make;
+        const buyBtn = tpl.querySelector('.buy');
+        const sellBtn = tpl.querySelector('.sell');
+        const viewBtn = tpl.querySelector('.view');
+        const editBtn = tpl.querySelector('.edit');
+        const delBtn = tpl.querySelector('.del');
 
-  function buyCar(button) {
-    const card = button.parentElement;
-    const carName = card.querySelector('h3').innerText;
-    const carPrice = card.querySelector('p').innerText;
-    alert(`لقد اخترت شراء السيارة:\n${carName}\n${carPrice}`);
-  }
+        buyBtn.addEventListener('click',()=>{toast('شكرًا على الاهتمام — هذه نسخة تجريبية');});
+        sellBtn.addEventListener('click',()=>{toggleSold(c.id)});
+        viewBtn.addEventListener('click',()=>{openDetails(c.id)});
+        editBtn.addEventListener('click',()=>{openEdit(c.id)});
+        delBtn.addEventListener('click',()=>{if(confirm('هل تود حذف السيارة نهائياً؟')){deleteCar(c.id)}});
 
-  function applyFilter() {
-    const type = document.getElementById('filterType').value.toLowerCase();
-    const min = document.getElementById('filterMin').value;
-    const max = document.getElementById('filterMax').value;
+        grid.appendChild(tpl);
+      });
+      count.textContent = list.length + ' سيارات';
+      populateYears();
+    }
 
-    const cars = document.querySelectorAll('.car-card');
-    cars.forEach(car => {
-      const carType = car.getAttribute('data-type').toLowerCase();
-      const carPrice = parseInt(car.getAttribute('data-price'));
+    function placeholder(text){
+      // صورة بسيطة SVG مضمّنة مع نص العلامة
+      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='800' height='500'><rect width='100%' height='100%' fill='%23f3f6ff'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='28' fill='%23707890' font-family='Arial'>${text}</text></svg>`;
+      return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
+    }
 
-      const matchType = type === '' || carType.includes(type);
-      const matchMin = min === '' || carPrice >= parseInt(min);
-      const matchMax = max === '' || carPrice <= parseInt(max);
+    // operations
+    function addCar(obj){cars.unshift(obj); saveCars(cars); render(filterList()); toast('تمت الإضافة بنجاح');}
+    function updateCar(id,patch){cars = cars.map(c=>c.id===id?({...c,...patch}):c); saveCars(cars); render(filterList()); toast('تم الحفظ');}
+    function deleteCar(id){cars=cars.filter(c=>c.id!==id); saveCars(cars); render(filterList());}
+    function toggleSold(id){cars = cars.map(c=>c.id===id?({...c,status:c.status==='sold'?'available':'sold'}):c); saveCars(cars); render(filterList());}
 
-      car.style.display = (matchType && matchMin && matchMax) ? 'block' : 'none';
-    });
-  }
-</script>
+    function openDetails(id){
+      const c = cars.find(x=>x.id===id); if(!c) return;
+      // عرض تفاصيل بسيط داخل المودال
+      modalTitle.textContent = 'تفاصيل السيارة';
+      document.getElementById('modalBody').innerHTML = `
+        <div style="display:flex;gap:12px;flex-direction:column">
+          <div style="border-radius:8px;overflow:hidden;height:240px;background:#fafafa"><img src="${c.img||placeholder(c.make)}" style="width:100%;height:240px;object-fit:cover"/></div>
+          <h2 style="margin:6px 0">${c.make}</h2>
+          <div class="muted">السنة: ${c.year} · السعر: ${c.price.toLocaleString('ar-EG')} دج · الحالة: ${c.status==='sold'?'مباع':'متاح'}</div>
+          <p style="margin-top:8px">${c.desc||'-'}</p>
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="primary" id="detailBuy">شراء</button>
+            <button class="ghost" id="detailEdit">تعديل</button>
+            <button class="ghost" id="detailClose">إغلاق</button>
+          </div>
+        </div>
+      `;
+      document.getElementById('detailClose').addEventListener('click',closeModalFn);
+      document.getElementById('detailEdit').addEventListener('click',()=>{openEdit(id)});
+      document.getElementById('detailBuy').addEventListener('click',()=>{toast('شكراً! تواصل مع البائع خارجياً — هذه نسخة تجريبية')});
+      showModal();
+    }
 
+    function openEdit(id){
+      const c = cars.find(x=>x.id===id); if(!c) return;
+      // اعد بناء نموذج الحفظ داخل المودال
+      buildForm();
+      modalTitle.textContent = 'تعديل السيارة';
+      carId.value = c.id; makeModel.value = c.make; yearI.value = c.year; price.value = c.price; desc.value = c.desc||''; status.value = c.status||'available';
+      if(c.img){imgPreview.innerHTML = `<img src="${c.img}" style="width:100%;height:100%;object-fit:cover"/>`}else{imgPreview.textContent='صورة'}
+      showModal();
+    }
+
+    function showModal(){modal.style.display='flex'}
+    function closeModalFn(){modal.style.display='none'; buildForm();}
+    closeModal.addEventListener('click',closeModalFn);
+
+    // form behavior
+    function buildForm(){
+      // restore form HTML if it was replaced by details
+      document.getElementById('modalBody').innerHTML = `
+        <form id="carForm">
+          <input type="hidden" id="carId" />
+          <div class="form-row">
+            <div class="field">
+              <label>العلامة / الموديل</label>
+              <input id="makeModel" type="text" placeholder="مثال: تويوتا كورولا 2020" required />
+            </div>
+            <div class="field">
+              <label>السنة</label>
+              <input id="year" type="number" min="1900" max="2099" step="1" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label>السعر (دج)</label>
+              <input id="price" type="number" min="0" required />
+            </div>
+            <div class="field">
+              <label>الحالة</label>
+              <select id="status">
+                <option value="available">متاح</option>
+                <option value="sold">مباع</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <label>وصف (اختياري)</label>
+            <textarea id="desc" placeholder="ملاحظات عن السيارة، حالة، رقم الكيلومترات..."></textarea>
+          </div>
+
+          <div style="margin-top:10px;display:flex;gap:10px;align-items:center">
+            <div style="flex:1">
+              <label>صورة السيارة (اختياري)</label>
+              <input id="image" type="file" accept="image/*" />
+            </div>
+            <div style="width:120px;height:80px;border-radius:8px;overflow:hidden;background:#fafafa;border:1px solid #eee;display:flex;align-items:center;justify-content:center" id="imgPreview">صورة</div>
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:10px">
+            <button class="primary" type="submit" id="saveBtn">حفظ</button>
+            <button type="button" class="ghost" id="resetBtn">إعادة تعيين</button>
+          </div>
+        </form>
+      `;
+      // rebind elements
+      bindFormEvents();
+    }
+
+    function bindFormEvents(){
+      const form = document.getElementById('carForm');
+      const carIdEl = document.getElementById('carId');
+      const makeModelEl = document.getElementById('makeModel');
+      const yearEl = document.getElementById('year');
+      const priceEl = document.getElementById('price');
+      const descEl = document.getElementById('desc');
+      const imageEl = document.getElementById('image');
+      const imgPrev = document.getElementById('imgPreview');
+      const statusEl = document.getElementById('status');
+      document.getElementById('resetBtn').addEventListener('click',()=>{form.reset();imgPrev.textContent='صورة';});
+
+      imageEl.addEventListener('change',(e)=>{
+        const f = e.target.files[0];
+        if(!f) return;
+        const reader = new FileReader();
+        reader.onload = function(ev){imgPrev.innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover"/>`; imgPrev.dataset.b64 = ev.target.result}
+        reader.readAsDataURL(f);
+      });
+
+      form.addEventListener('submit',(ev)=>{
+        ev.preventDefault();
+        const id = carIdEl.value;
+        const payload = {make:makeModelEl.value.trim(),year:parseInt(yearEl.value,10),price:parseInt(priceEl.value,10),desc:descEl.value.trim(),status:statusEl.value,img:imgPrev.dataset.b64||''};
+        if(!payload.make || !payload.year || !payload.price){alert('املأ الحقول الأساسية');return}
+        if(id){updateCar(id,payload);}
+        else{payload.id=uid(); addCar(payload)}
+        closeModalFn();
+      });
+    }
+
+    // search & filter
+    function filterList(){
+      const term = q.value.trim().toLowerCase();
+      const yr = filterYear.value;
+      let list = [...cars];
+      if(yr!=='all'){list = list.filter(c=>String(c.year)===yr)}
+      if(term){list = list.filter(c=> (c.make||'').toLowerCase().includes(term) || (c.desc||'').toLowerCase().includes(term) || String(c.year).includes(term) || String(c.price).includes(term))}
+      // sort by newest
+      list.sort((a,b)=>b.year - a.year);
+      return list;
+    }
+
+    function populateYears(){
+      const years = Array.from(new Set(cars.map(c=>c.year))).sort((a,b)=>b-a);
+      filterYear.innerHTML = '<option value="all">كل السنوات</option>' + years.map(y=>`<option value="${y}">${y}</option>`).join('');
+      // keep selection
+    }
+
+    // small toast
+    function toast(t){
+      const el = document.createElement('div');
+      el.textContent=t; el.style.position='fixed'; el.style.bottom='18px'; el.style.left='50%'; el.style.transform='translateX(-50%)'; el.style.background='rgba(0,0,0,0.8)'; el.style.color='#fff'; el.style.padding='10px 14px'; el.style.borderRadius='8px'; el.style.zIndex=9999; document.body.appendChild(el);
+      setTimeout(()=>{el.style.transition='opacity .4s';el.style.opacity=0;setTimeout(()=>el.remove(),400)},1800);
+    }
+
+    // events binding
+    q.addEventListener('input',()=>render(filterList()));
+    filterYear.addEventListener('change',()=>render(filterList()));
+    reload.addEventListener('click',()=>{cars = loadCars()||[]; render(filterList()); toast('تم التحديث')});
+    addCarBtn.addEventListener('click',()=>{buildForm(); modalTitle.textContent='أضف سيارة'; showModal();});
+
+    // first render & bind
+    render(cars);
+    // pre-bind form (for first usage)
+    buildForm();
+
+    // expose for debug
+    window.MOTARJI={getCars:()=>cars,save:()=>saveCars(cars)}
+  </script>
 </body>
 </html>

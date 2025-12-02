@@ -1,50 +1,61 @@
-// بيانات سيارات تجريبية – يمكنك استبدالها لاحقاً بقاعدة بيانات حقيقية
-const cars = [
-    {
-        id: 1,
-        name: "Toyota Corolla 2018",
-        price: "150 مليون",
-        image: "https://via.placeholder.com/400x250.png?text=Car+1",
-        description: "سيارة ممتازة بحالة جيدة جداً"
-    },
-    {
-        id: 2,
-        name: "Hyundai i20 2020",
-        price: "185 مليون",
-        image: "https://via.placeholder.com/400x250.png?text=Car+2",
-        description: "مازالت جديدة مع كيلومترات قليلة"
-    },
-    {
-        id: 3,
-        name: "Volkswagen Golf 2017",
-        price: "200 مليون",
-        image: "https://via.placeholder.com/400x250.png?text=Car+3",
-        description: "سيارة أوروبية نظيفة جداً"
-    }
-];
+// Load Cars From LocalStorage
+let cars = JSON.parse(localStorage.getItem("motarji_cars")) || [];
 
-// دالة تحميل السيارات
-function loadCars() {
-    const container = document.getElementById("car-list");
-    container.innerHTML = "";
+// Save Cars
+function saveCars() {
+    localStorage.setItem("motarji_cars", JSON.stringify(cars));
+}
 
-    cars.forEach(car => {
-        const card = document.createElement("div");
-        card.className = "car-card";
+// Display Cars
+function displayCars() {
+    const list = document.getElementById("carList");
+    list.innerHTML = "";
 
-        card.innerHTML = `
-            <img src="${car.image}" alt="${car.name}">
+    cars.forEach((car, index) => {
+        list.innerHTML += `
+        <div class="car-card">
             <h3>${car.name}</h3>
-            <p>💰 السعر: ${car.price}</p>
-            <p>${car.description}</p>
-            <a href="#" class="btn">التفاصيل</a>
+            <p><strong>السعر:</strong> ${car.price} دج</p>
+            <p><strong>المسافة:</strong> ${car.km} كم</p>
+            <p><strong>السنة:</strong> ${car.year}</p>
+            <button onclick="deleteCar(${index})" class="btn-delete">حذف</button>
+        </div>
         `;
-
-        container.appendChild(card);
     });
 }
 
-// تشغيل التطبيق عند تحميل الصفحة
-window.onload = () => {
-    loadCars();
-};
+// Add Car
+document.getElementById("saveCar").addEventListener("click", function () {
+    const name = document.getElementById("carName").value.trim();
+    const price = document.getElementById("carPrice").value.trim();
+    const km = document.getElementById("carKm").value.trim();
+    const year = document.getElementById("carYear").value.trim();
+
+    if (!name || !price || !km || !year) {
+        alert("يرجى ملء جميع الحقول");
+        return;
+    }
+
+    cars.push({ name, price, km, year });
+    saveCars();
+    displayCars();
+
+    document.getElementById("addForm").classList.add("hidden");
+});
+
+// Delete Car
+function deleteCar(index) {
+    if (confirm("هل أنت متأكد من حذف هذه السيارة؟")) {
+        cars.splice(index, 1);
+        saveCars();
+        displayCars();
+    }
+}
+
+// Show Add Form
+document.getElementById("addBtn").addEventListener("click", () => {
+    document.getElementById("addForm").classList.toggle("hidden");
+});
+
+// Init
+displayCars();

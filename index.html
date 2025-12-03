@@ -3,86 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موتارجي - منصة السيارات</title>
+    <title>موتارجي - بيع وشراء السيارات</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="https://via.placeholder.com/32x32?text=M">
 </head>
 <body>
-    <div class="container">
-        <!-- رأس الصفحة -->
-        <header class="header">
-            <h1>موتارجي</h1>
-            <p>منصة شراء وبيع السيارات الحديثة</p>
-            <div id="userPanel">
-                <span id="welcomeUser"></span>
-                <button id="loginBtn">تسجيل الدخول</button>
-                <button id="logoutBtn" class="hidden">خروج</button>
-                <select id="langSelect">
-                    <option value="ar">العربية</option>
-                    <option value="en">English</option>
-                </select>
-            </div>
-        </header>
-
-        <!-- نافذة تسجيل الدخول -->
-        <div id="loginModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeLogin">&times;</span>
-                <h2>تسجيل الدخول</h2>
-                <form id="loginForm">
-                    <input type="text" id="username" placeholder="اسم المستخدم" required>
-                    <input type="password" id="password" placeholder="كلمة المرور" required>
-                    <button type="submit">دخول</button>
-                </form>
-                <p>أو <span id="showRegister">سجل الآن</span></p>
-            </div>
-        </div>
-
-        <!-- نافذة تسجيل جديد -->
-        <div id="registerModal" class="modal">
-            <div class="modal-content">
-                <span class="close" id="closeRegister">&times;</span>
-                <h2>تسجيل جديد</h2>
-                <form id="registerForm">
-                    <input type="text" id="regUsername" placeholder="اسم المستخدم" required>
-                    <input type="password" id="regPassword" placeholder="كلمة المرور" required>
-                    <button type="submit">تسجيل</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- قائمة تنقل -->
+    <!-- رأس الصفحة -->
+    <header>
+        <div class="logo">موتارجي</div>
         <nav>
-            <button id="showCarsBtn">السيارات</button>
-            <button id="showSellFormBtn">بيع سيارتك</button>
-            <input type="text" id="searchInput" placeholder="بحث عن سيارة...">
-            <select id="filterBrand">
-                <option value="">كل الماركات</option>
-                <option value="تويوتا">تويوتا</option>
-                <option value="هوندا">هوندا</option>
-                <option value="مرسيدس">مرسيدس</option>
-            </select>
+            <ul>
+                <li><a href="#home">الرئيسية</a></li>
+                <li><a href="#cars">السيارات</a></li>
+                <li><a href="#about">حول</a></li>
+                <li><a href="#contact">اتصل بنا</a></li>
+            </ul>
         </nav>
+        <div class="lang-login">
+            <button id="langBtn">EN/عربي</button>
+            <button id="loginBtn">تسجيل الدخول</button>
+        </div>
+    </header>
 
-        <!-- قسم عرض السيارات -->
-        <section id="carsSection" class="cars-grid"></section>
+    <!-- الصفحة الرئيسية -->
+    <section id="home" class="hero">
+        <h1>مرحباً بك في منصة موتارجي</h1>
+        <p>يمكنك الآن شراء وبيع السيارات بسهولة وسرعة.</p>
+        <div class="hero-buttons">
+            <button class="buy-btn">شراء</button>
+            <button class="sell-btn">بيع</button>
+        </div>
+    </section>
 
-        <!-- قسم نموذج البيع -->
-        <section id="sellFormSection" class="hidden">
-            <h2>أضف سيارتك للبيع</h2>
-            <form id="sellForm">
-                <input type="text" id="carName" placeholder="اسم السيارة" required>
-                <input type="number" id="carYear" placeholder="سنة الصنع" required>
-                <input type="number" id="carPrice" placeholder="السعر بالدج" required>
-                <input type="text" id="carBrand" placeholder="الماركة" required>
-                <input type="text" id="carImage" placeholder="رابط صورة السيارة">
-                <button type="submit">إضافة السيارة</button>
-            </form>
-        </section>
+    <!-- قائمة السيارات -->
+    <section id="cars" class="cars-section">
+        <h2>أحدث السيارات المعروضة</h2>
+        <div class="cars-container" id="carsContainer">
+            <!-- سيتم تعبئة السيارات هنا بواسطة main.js -->
+        </div>
+    </section>
 
-        <footer class="footer">
-            <p>جميع الحقوق محفوظة &copy; 2025 - موتارجي</p>
-        </footer>
-    </div>
+    <!-- قسم حول -->
+    <section id="about" class="about-section">
+        <h2>حول موتارجي</h2>
+        <p>منصة رائدة في بيع وشراء السيارات في الجزائر. نضمن لك تجربة سلسة وآمنة.</p>
+    </section>
+
+    <!-- قسم الاتصال -->
+    <section id="contact" class="contact-section">
+        <h2>اتصل بنا</h2>
+        <form id="contactForm">
+            <input type="text" placeholder="اسمك" required>
+            <input type="email" placeholder="البريد الإلكتروني" required>
+            <textarea placeholder="رسالتك" required></textarea>
+            <button type="submit">إرسال</button>
+        </form>
+    </section>
+
+    <!-- تذييل الصفحة -->
+    <footer>
+        <p>&copy; 2025 موتارجي. جميع الحقوق محفوظة.</p>
+    </footer>
 
     <script src="main.js"></script>
 </body>

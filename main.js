@@ -1,147 +1,47 @@
-// البيانات الافتراضية للسيارات
-let cars = [
-    {name: "تويوتا كورولا", year: 2020, price: 400000, brand: "تويوتا", image: "https://via.placeholder.com/250x150"},
-    {name: "هوندا سيفيك", year: 2019, price: 380000, brand: "هوندا", image: "https://via.placeholder.com/250x150"},
-    {name: "مرسيدس C-Class", year: 2018, price: 600000, brand: "مرسيدس", image: "https://via.placeholder.com/250x150"}
+// ===== بيانات السيارات =====
+const cars = [
+    {name: "تويوتا كورولا", year: 2020, price: 400000, brand: "تويوتا", image: "https://via.placeholder.com/250x150?text=تويوتا+كورولا"},
+    {name: "هوندا سيفيك", year: 2019, price: 380000, brand: "هوندا", image: "https://via.placeholder.com/250x150?text=هوندا+سيفيك"},
+    {name: "مرسيدس C-Class", year: 2018, price: 650000, brand: "مرسيدس", image: "https://via.placeholder.com/250x150?text=مرسيدس+C-Class"},
+    {name: "بي إم دبليو 320i", year: 2021, price: 700000, brand: "بي إم دبليو", image: "https://via.placeholder.com/250x150?text=بي+إم+دبليو+320i"},
+    {name: "نيسان ألتيما", year: 2020, price: 420000, brand: "نيسان", image: "https://via.placeholder.com/250x150?text=نيسان+ألتيما"}
 ];
 
-// المستخدمين الافتراضيين
-let users = [
-    {username: "admin", password: "1234"}
-];
+// ===== إضافة السيارات للواجهة =====
+const carsContainer = document.getElementById('carsContainer');
 
-let currentUser = null;
+cars.forEach(car => {
+    const carCard = document.createElement('div');
+    carCard.classList.add('car-card');
 
-// العناصر
-const carsSection = document.getElementById("carsSection");
-const sellFormSection = document.getElementById("sellFormSection");
-const showCarsBtn = document.getElementById("showCarsBtn");
-const showSellFormBtn = document.getElementById("showSellFormBtn");
-const sellForm = document.getElementById("sellForm");
-const searchInput = document.getElementById("searchInput");
-const filterBrand = document.getElementById("filterBrand");
-
-const loginModal = document.getElementById("loginModal");
-const registerModal = document.getElementById("registerModal");
-const loginBtn = document.getElementById("loginBtn");
-const logoutBtn = document.getElementById("logoutBtn");
-const welcomeUser = document.getElementById("welcomeUser");
-const closeLogin = document.getElementById("closeLogin");
-const closeRegister = document.getElementById("closeRegister");
-const showRegister = document.getElementById("showRegister");
-
-const loginForm = document.getElementById("loginForm");
-const registerForm = document.getElementById("registerForm");
-
-// عرض السيارات
-function displayCars(list) {
-    carsSection.innerHTML = "";
-    list.forEach(car => {
-        const card = document.createElement("div");
-        card.className = "car-card";
-        card.innerHTML = `
-            <img src="${car.image || 'https://via.placeholder.com/250x150'}" alt="${car.name}">
-            <h3>${car.name} ${car.year}</h3>
-            <p>السعر: ${car.price} دج</p>
-            <p>الماركة: ${car.brand}</p>
+    carCard.innerHTML = `
+        <img src="${car.image}" alt="${car.name}">
+        <div class="car-info">
+            <h3>${car.name} (${car.year})</h3>
+            <p>السعر: ${car.price.toLocaleString()} دج</p>
             <button>شراء</button>
-        `;
-        carsSection.appendChild(card);
-    });
-}
+        </div>
+    `;
 
-// التصفية والبحث
-searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-    const filtered = cars.filter(car => car.name.toLowerCase().includes(query));
-    displayCars(filtered);
+    carsContainer.appendChild(carCard);
 });
 
-filterBrand.addEventListener("change", () => {
-    const brand = filterBrand.value;
-    const filtered = brand ? cars.filter(car => car.brand === brand) : cars;
-    displayCars(filtered);
+// ===== تفعيل تغيير اللغة (تمثيلي) =====
+const langBtn = document.getElementById('langBtn');
+langBtn.addEventListener('click', () => {
+    alert("ميزة تغيير اللغة غير مفعلة حالياً، لكنها جاهزة للتطوير.");
 });
 
-// التبديل بين العرض ونموذج البيع
-showCarsBtn.addEventListener("click", () => {
-    carsSection.classList.remove("hidden");
-    sellFormSection.classList.add("hidden");
+// ===== تفعيل تسجيل الدخول (تمثيلي) =====
+const loginBtn = document.getElementById('loginBtn');
+loginBtn.addEventListener('click', () => {
+    alert("نافذة تسجيل الدخول ستظهر هنا. يمكنك ربطها لاحقًا مع النظام الخاص بك.");
 });
 
-showSellFormBtn.addEventListener("click", () => {
-    if (!currentUser) {
-        loginModal.style.display = "block";
-        return;
-    }
-    sellFormSection.classList.remove("hidden");
-    carsSection.classList.add("hidden");
-});
-
-// إضافة سيارة جديدة
-sellForm.addEventListener("submit", e => {
+// ===== نموذج الاتصال =====
+const contactForm = document.getElementById('contactForm');
+contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const car = {
-        name: document.getElementById("carName").value,
-        year: parseInt(document.getElementById("carYear").value),
-        price: parseInt(document.getElementById("carPrice").value),
-        brand: document.getElementById("carBrand").value,
-        image: document.getElementById("carImage").value
-    };
-    cars.push(car);
-    displayCars(cars);
-    sellForm.reset();
-    sellFormSection.classList.add("hidden");
-    carsSection.classList.remove("hidden");
+    alert("تم إرسال رسالتك بنجاح!");
+    contactForm.reset();
 });
-
-// تسجيل الدخول
-loginBtn.addEventListener("click", () => loginModal.style.display = "block");
-closeLogin.addEventListener("click", () => loginModal.style.display = "none");
-showRegister.addEventListener("click", () => {
-    loginModal.style.display = "none";
-    registerModal.style.display = "block";
-});
-closeRegister.addEventListener("click", () => registerModal.style.display = "none");
-
-loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-    const user = users.find(u => u.username === username && u.password === password);
-    if(user) {
-        currentUser = user;
-        welcomeUser.textContent = `مرحباً، ${user.username}`;
-        loginBtn.classList.add("hidden");
-        logoutBtn.classList.remove("hidden");
-        loginModal.style.display = "none";
-    } else {
-        alert("بيانات الدخول غير صحيحة!");
-    }
-});
-
-// تسجيل جديد
-registerForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const username = document.getElementById("regUsername").value;
-    const password = document.getElementById("regPassword").value;
-    if(users.some(u => u.username === username)) {
-        alert("اسم المستخدم موجود مسبقاً!");
-        return;
-    }
-    const newUser = {username, password};
-    users.push(newUser);
-    alert("تم التسجيل بنجاح!");
-    registerModal.style.display = "none";
-});
-
-// تسجيل الخروج
-logoutBtn.addEventListener("click", () => {
-    currentUser = null;
-    welcomeUser.textContent = "";
-    loginBtn.classList.remove("hidden");
-    logoutBtn.classList.add("hidden");
-});
-
-// العرض الأولي
-displayCars(cars);

@@ -178,6 +178,36 @@ header .lang-login button:hover {
     background-color: #218838;
 }
 
+/* ===== Reviews Section ===== */
+.reviews-section {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #f0f8ff;
+}
+
+.reviews-section h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #1e90ff;
+}
+
+.reviews-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.review-card {
+    background-color: #fff;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    display: inline-block;
+    max-width: 300px;
+}
+
 /* ===== About Section ===== */
 .about-section {
     padding: 50px 20px;
@@ -241,4 +271,8 @@ footer {
     background-color: #1e90ff;
     color: #fff;
     margin-top: 30px;
+}
+
+footer .social-icons {
+    margin-top: 10px;
 }

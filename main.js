@@ -26,6 +26,22 @@ cars.forEach(car => {
     carsContainer.appendChild(carCard);
 });
 
+// ===== بيانات التعليقات =====
+const reviews = [
+    {user: "أحمد", comment: "خدمة رائعة وسريعة!"},
+    {user: "ليلى", comment: "وجدت السيارة التي أبحث عنها بسهولة."},
+    {user: "سامي", comment: "تجربة شراء ممتازة، شكراً لكم."}
+];
+
+const reviewsContainer = document.getElementById('reviewsContainer');
+
+reviews.forEach(review => {
+    const reviewCard = document.createElement('div');
+    reviewCard.classList.add('review-card');
+    reviewCard.innerHTML = `<strong>${review.user}</strong><p>${review.comment}</p>`;
+    reviewsContainer.appendChild(reviewCard);
+});
+
 // ===== تفعيل تغيير اللغة (تمثيلي) =====
 const langBtn = document.getElementById('langBtn');
 langBtn.addEventListener('click', () => {

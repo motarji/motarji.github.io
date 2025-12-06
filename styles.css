@@ -266,6 +266,7 @@ header .lang-login button:hover {
 
 /* ===== Footer ===== */
 footer {
+
     padding: 20px;
     text-align: center;
     background-color: #1e90ff;
@@ -275,4 +276,23 @@ footer {
 
 footer .social-icons {
     margin-top: 10px;
+}
+/* إصلاح مشكلة تغطية الهيدر للمحتوى */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+/* إضافة مسافة تحت الهيدر */
+body {
+    padding-top: 90px; /* يمكنك تغيير الرقم حسب ارتفاع الهيدر */
+}
+
+/* تحسين عرض القائمة على الهاتف */
+nav ul {
+    flex-wrap: wrap;
+    text-align: center;
 }

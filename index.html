@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>موتارجي - بيع وشراء السيارات</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="https://via.placeholder.com/32x32?text=M">
+
+    <!-- Pi SDK -->
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script>
+        Pi.init({ version: "2.0" });
+    </script>
 </head>
+
 <body>
+
     <!-- رأس الصفحة -->
     <header>
         <div class="logo">موتارجي</div>
@@ -21,8 +31,9 @@
             </ul>
         </nav>
         <div class="lang-login">
-            <button id="langBtn">EN/عربي</button>
-            <button id="loginBtn">تسجيل الدخول</button>
+            <button id="langBtn">EN / عربي</button>
+            <!-- زر Pi Login -->
+            <button id="pi-login-btn">تسجيل الدخول بـ Pi</button>
         </div>
     </header>
 
@@ -39,26 +50,22 @@
     <!-- قائمة السيارات -->
     <section id="cars" class="cars-section">
         <h2>أحدث السيارات المعروضة</h2>
-        <div class="cars-container" id="carsContainer">
-            <!-- سيتم تعبئة السيارات هنا بواسطة main.js -->
-        </div>
+        <div class="cars-container" id="carsContainer"></div>
     </section>
 
-    <!-- قسم التعليقات -->
+    <!-- آراء العملاء -->
     <section id="reviews" class="reviews-section">
         <h2>آراء العملاء</h2>
-        <div class="reviews-container" id="reviewsContainer">
-            <!-- سيتم إضافة التعليقات ديناميكياً -->
-        </div>
+        <div class="reviews-container" id="reviewsContainer"></div>
     </section>
 
-    <!-- قسم حول -->
+    <!-- حول -->
     <section id="about" class="about-section">
         <h2>حول موتارجي</h2>
         <p>منصة رائدة في بيع وشراء السيارات في الجزائر. نضمن لك تجربة سلسة وآمنة.</p>
     </section>
 
-    <!-- قسم الاتصال -->
+    <!-- الاتصال -->
     <section id="contact" class="contact-section">
         <h2>اتصل بنا</h2>
         <form id="contactForm">
@@ -69,14 +76,17 @@
         </form>
     </section>
 
-    <!-- تذييل الصفحة -->
+    <!-- التذييل -->
     <footer>
         <p>&copy; 2025 موتارجي. جميع الحقوق محفوظة.</p>
         <div class="social-icons">
-            <a href="#">فيسبوك</a> | <a href="#">تويتر</a> | <a href="#">إنستغرام</a>
+            <a href="#">فيسبوك</a> |
+            <a href="#">تويتر</a> |
+            <a href="#">إنستغرام</a>
         </div>
     </footer>
 
-    <script src="main.js"></script>
+    <!-- JavaScript -->
+    <script src="mains.js"></script>
 </body>
 </html>

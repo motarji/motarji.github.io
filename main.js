@@ -1,4 +1,6 @@
-// ===== بيانات السيارات =====
+// ================================
+// بيانات السيارات
+// ================================
 const cars = [
     {name: "تويوتا كورولا", year: 2020, price: 400000, brand: "تويوتا", image: "https://via.placeholder.com/250x150?text=تويوتا+كورولا"},
     {name: "هوندا سيفيك", year: 2019, price: 380000, brand: "هوندا", image: "https://via.placeholder.com/250x150?text=هوندا+سيفيك"},
@@ -7,13 +9,11 @@ const cars = [
     {name: "نيسان ألتيما", year: 2020, price: 420000, brand: "نيسان", image: "https://via.placeholder.com/250x150?text=نيسان+ألتيما"}
 ];
 
-// ===== إضافة السيارات للواجهة =====
 const carsContainer = document.getElementById('carsContainer');
 
 cars.forEach(car => {
     const carCard = document.createElement('div');
     carCard.classList.add('car-card');
-
     carCard.innerHTML = `
         <img src="${car.image}" alt="${car.name}">
         <div class="car-info">
@@ -22,11 +22,12 @@ cars.forEach(car => {
             <button>شراء</button>
         </div>
     `;
-
     carsContainer.appendChild(carCard);
 });
 
-// ===== بيانات التعليقات =====
+// ================================
+// بيانات التعليقات
+// ================================
 const reviews = [
     {user: "أحمد", comment: "خدمة رائعة وسريعة!"},
     {user: "ليلى", comment: "وجدت السيارة التي أبحث عنها بسهولة."},
@@ -42,19 +43,47 @@ reviews.forEach(review => {
     reviewsContainer.appendChild(reviewCard);
 });
 
-// ===== تفعيل تغيير اللغة (تمثيلي) =====
+// ================================
+// تغيير اللغة (تمثيلي)
+// ================================
 const langBtn = document.getElementById('langBtn');
 langBtn.addEventListener('click', () => {
-    alert("ميزة تغيير اللغة غير مفعلة حالياً، لكنها جاهزة للتطوير.");
+    alert("ميزة تغيير اللغة غير مفعلة حالياً.");
 });
 
-// ===== تفعيل تسجيل الدخول (تمثيلي) =====
-const loginBtn = document.getElementById('loginBtn');
-loginBtn.addEventListener('click', () => {
-    alert("نافذة تسجيل الدخول ستظهر هنا. يمكنك ربطها لاحقًا مع النظام الخاص بك.");
-});
+// ================================
+// تسجيل الدخول عبر Pi SDK (المهم)
+// ================================
+const piLoginBtn = document.getElementById('pi-login-btn');
 
-// ===== نموذج الاتصال =====
+if (piLoginBtn) {
+    piLoginBtn.addEventListener('click', () => {
+        Pi.authenticate(
+            ["username"],
+            function (auth) {
+                console.log("✅ Pi Login Success");
+                console.log("Username:", auth.user.username);
+                console.log("UID:", auth.user.uid);
+
+                localStorage.setItem("pi_username", auth.user.username);
+                localStorage.setItem("pi_uid", auth.user.uid);
+
+                alert("مرحبا بك " + auth.user.username);
+
+                // إخفاء زر الدخول بعد النجاح
+                piLoginBtn.style.display = "none";
+            },
+            function (error) {
+                console.error("❌ Pi Login Failed", error);
+                alert("فشل تسجيل الدخول عبر Pi");
+            }
+        );
+    });
+}
+
+// ================================
+// نموذج الاتصال
+// ================================
 const contactForm = document.getElementById('contactForm');
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
